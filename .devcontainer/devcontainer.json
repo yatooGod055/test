@@ -1,0 +1,15 @@
+{
+  "name": "Jellyfin Rclone Setup",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--cap-add=SYS_ADMIN",
+    "--device=/dev/fuse",
+    "--security-opt", "apparmor:unconfined"
+  ],
+  "postCreateCommand": "sudo service docker start && rclone mount gdrive: /mnt/gdrive --daemon --vfs-cache-mode writes && docker run -d --name jellyfin -v /mnt/gdrive:/media -v jellyfin-config:/config -p 8096:8096 jellyfin/jellyfin",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}
